@@ -14,10 +14,10 @@ export class UserDataService {
     });
   }
 
-  async getByUsername(usernameStr: String): Promise<User | null> {
-    return await this.prisma.user.findFirstOrThrow({
+  async getByUsername(usernameStr: string): Promise<User | null> {
+    return await this.prisma.user.findFirst({
       where: {
-        username: usernameStr.toString()
+        username: usernameStr
       }
     });
   }
