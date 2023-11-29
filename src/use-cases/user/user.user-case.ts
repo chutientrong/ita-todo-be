@@ -4,6 +4,7 @@ import { UserDataService } from 'src/frameworks/data-services/user.service';
 import { Prisma } from '@prisma/client';
 import { CreateUserRequest } from './models/create-user.request';
 import { UserResponse } from './models/user.response';
+import { UserLoggedResponse } from './models/user-logged.response';
 
 @Injectable()
 export class UserUseCases {
@@ -16,18 +17,28 @@ export class UserUseCases {
     const users = await this.userDataServices.getAll({
       where: {},
     });
-
     return users.map((item) => this.userFactoryService.getUserInformation(item));
 
   }
 
-  getUserById(id: any): Promise<UserResponse> {
-    return this.userDataServices.get(id);
+  async getUserLogger(id: any): Promise<UserLoggedResponse> {
+    const curentUser = await this.userDataServices.get({
+      id: id,
+    });
+    return this.userFactoryService.getUserLoggedResponse(curentUser);
+  }
+
+  async getUserById(id: any): Promise<UserResponse> {
+    const curentUser = await this.userDataServices.get({
+      id: id,
+    });
+    return this.userFactoryService.getUserInformation(curentUser);
   }
 
   async createUser(userRequest: CreateUserRequest): Promise<UserResponse> {
     let createUserDto = this.userFactoryService.createNewUser(userRequest);
-    console.log(createUserDto);
+
+    // const hashedPassword = await bcrypt.hash(password, saltOrRounds);
     const createUser = await this.userDataServices.create(createUserDto);
     return this.userFactoryService.getUserInformation(createUser);
   }

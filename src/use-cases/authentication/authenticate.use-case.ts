@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserDataService } from 'src/frameworks/data-services/user.service';
 import { AuthFactoryService } from './authenticate-factory.service';
 import { JwtService } from '@nestjs/jwt';
@@ -13,13 +13,15 @@ export class AuthUseCases {
 
     async signIn(username: string, pass: string): Promise<any> {
         const user = await this.userDataServices.getByUsername(username);
+        
         if (user?.password !== pass) {
-            // throw new UnauthorizedException();
+            throw new UnauthorizedException();
         }
 
         const payload = { sub: user.id, username: user.username };
         return {
-            access_token: await this.jwtService.signAsync(payload),
+            accessToken: await this.jwtService.signAsync(payload),
+            userId: user.id
         };
     }
 

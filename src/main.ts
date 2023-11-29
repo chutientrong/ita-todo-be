@@ -20,12 +20,12 @@ import { AppModule } from './app.module';
 // }
 // bootstrap();
 
-
+declare const module: any;
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
 
   const config = new DocumentBuilder()
-    .setTitle('Todos example')
+    .setTitle('Todos examples')
     .setDescription('The Todos API description')
     .setVersion('1.0')
     .addBearerAuth(undefined, 'defaultBearerAuth')
@@ -52,5 +52,10 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document, options);
 
   await app.listen(3000);
+
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
 }
 bootstrap();

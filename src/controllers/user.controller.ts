@@ -1,5 +1,5 @@
 
-import { Controller, Get, Param, Post, Body, Put, Delete, UseGuards} from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete, UseGuards, Request } from '@nestjs/common';
 import { UserUseCases } from '../use-cases/user/user.user-case';
 import { CreateUserRequest } from 'src/use-cases/user/models/create-user.request';
 import { UserResponse } from 'src/use-cases/user/models/user.response';
@@ -10,7 +10,7 @@ import { AuthGuard } from 'src/use-cases/authentication/auth.guard';
 
 @ApiBearerAuth('defaultBearerAuth')
 @ApiTags('user')
-@Controller('user')
+@Controller('api/user')
 export class UserController {
     constructor(
         private userService: UserUseCases,
@@ -27,6 +27,15 @@ export class UserController {
     @ApiResponse({ status: 403, description: 'Forbidden.' })
     async getAll(): Promise<UserResponse[]> {
         return this.userService.getAllUsers();
+    }
+
+    @Get('get-profile')
+    @ApiResponse({ status: 201, description: 'The record has been successfully created.', })
+    @ApiResponse({ status: 403, description: 'Forbidden.' })
+    async getProfile(@Request() req: any): Promise<UserResponse> {
+        let id = req.user.id;
+        console.log(req);
+        return this.userService.getUserById(id);
     }
 
     @Post('create-user')
