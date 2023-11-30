@@ -20,8 +20,9 @@ export class UserFactoryService {
 
   getUserLoggedResponse(user: User) {
     const userResponse = new UserLoggedResponseDto();
-    // userResponse.id = user.id;
-    userResponse.name = user.firstName;
+    userResponse.id = user.id;
+    userResponse.firstName = user.firstName;
+    userResponse.lastName = user.lastName;
     userResponse.email = user.email;
     return userResponse;
   }

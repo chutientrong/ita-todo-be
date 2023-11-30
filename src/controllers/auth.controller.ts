@@ -2,10 +2,10 @@ import { Body, Controller, Get, Post, HttpCode, HttpStatus, Request } from '@nes
 import { AuthUseCases } from '../use-cases/authentication/index';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { UserUseCases } from 'src/use-cases/user';
-import { SignInRequestDto } from 'src/core';
+import { SignInRequestDto, SwaggerConstants } from 'src/core';
 import { Public } from 'src/core/auth.guard';
 
-@ApiBearerAuth('defaultBearerAuth')
+@ApiBearerAuth(SwaggerConstants.defaultName)
 @ApiTags('Authentication')
 @Controller('api/auth')
 export class AuthController {
@@ -18,7 +18,7 @@ export class AuthController {
   signIn(@Body() signInDto: SignInRequestDto) {
     return this.authService.signIn(signInDto.username, signInDto.password);
   }
-
+  
   @Get('get-current-login')
   async getCurrentLogin(@Request() req: any): Promise<any> {
     if (!req.user)

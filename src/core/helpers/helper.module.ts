@@ -3,15 +3,16 @@ import { PasswordHelper } from './password.helper';
 import { DataServicesModule } from 'src/frameworks/data-services/data-services.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from '../common/constants';
+import { AuthGuard } from '../auth.guard';
 
 @Module({
     imports: [
         JwtModule.register({
             global: true,
             secret: jwtConstants.secret,
-            signOptions: { expiresIn: '360s' },
+            signOptions: { expiresIn: '1d' },
         })],
-    providers: [PasswordHelper],
-    exports: [PasswordHelper],
+    providers: [PasswordHelper, AuthGuard],
+    exports: [PasswordHelper, AuthGuard],
 })
 export class HelperModule { }
