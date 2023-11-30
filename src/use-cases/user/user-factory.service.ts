@@ -1,42 +1,53 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto, UpdateUserDto, UserDataDto } from '../../core/dtos';
-import { User } from '@prisma/client';
+import { UpdateUserDto, UserDataDto } from '../../core/dtos';
 import { CreateUserRequest } from './models/create-user.request';
 import { UserLoggedResponse } from './models/user-logged.response';
+import * as bcrypt from 'bcrypt';
+import { User } from 'src/frameworks/data-services/entities/user.entity';
 
 @Injectable()
 export class UserFactoryService {
   getUserInformation(userData: User) {
     const userInformation = new UserDataDto();
-    userInformation.name = userData.name;
+    userInformation.name = userData.firstName + userData.lastName;
     userInformation.email = userData.email;
 
     return userInformation;
   }
 
-  getUserLoggedResponse(user: User){
+  getUserLoggedResponse(user: User) {
     const userResponse = new UserLoggedResponse();
-    userResponse.id = user.id;
-    userResponse.name = user.name;
+    // userResponse.id = user.id;
+    userResponse.name = user.firstName;
     userResponse.email = user.email;
     return userResponse;
   }
 
-  createNewUser(createAuthorDto: CreateUserRequest) {
-    const newUser = new CreateUserDto();
-    newUser.name = createAuthorDto.name;
-    newUser.email = createAuthorDto.email;
-    newUser.username = createAuthorDto.email;
-    newUser.password = createAuthorDto.name;
+  async createNewUser(createUserDto: CreateUserRequest) {
+    const newUser = new User();
+    newUser.firstName = createUserDto.firstName;
+    newUser.lastName = createUserDto.lastName;
+
+    newUser.email = createUserDto.email;
+    newUser.userName = createUserDto.email;
+    newUser.password = await this.hashPassword(createUserDto.password);
 
     return newUser;
   }
 
-  updateUser(updateAuthorDto: CreateUserRequest) {
+  updateUser(updateUserDto: CreateUserRequest) {
     const newUser = new UpdateUserDto;
-    newUser.name = updateAuthorDto.name;
-    newUser.email = updateAuthorDto.email;
+    newUser.name = updateUserDto.firstName + updateUserDto.lastName;
+    newUser.email = updateUserDto.email;
 
     return newUser;
+  }
+
+  hashPassword(password: string) {
+    return bcrypt.hash(password, 10);
+  }
+
+  comparePassword(password: string, passwordHash: string): Promise<boolean> {
+    return bcrypt.compare(password, passwordHash);
   }
 }
