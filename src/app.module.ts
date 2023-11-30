@@ -6,7 +6,7 @@ import { AuthUseCasesModule } from './use-cases/authentication/authenticate-use-
 import { AuthController } from './controllers/auth.controller';
 import { APP_GUARD } from '@nestjs/core';
 import { HelperModule } from './core/helpers/helper.module';
-import { AuthGuard } from './use-cases/authentication/auth.guard';
+import { AuthGuard } from './core/auth.guard';
 
 @Module({
   imports: [

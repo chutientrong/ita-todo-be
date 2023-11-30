@@ -1,10 +1,11 @@
 import { Body, Controller, Get, Post, HttpCode, HttpStatus, Request, UseGuards } from '@nestjs/common';
 import { AuthUseCases } from 'src/use-cases/authentication/authenticate.use-case';
-import { ApiTags, ApiResponse, ApiOkResponse } from '@nestjs/swagger';
+import { ApiTags, ApiResponse, ApiOkResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { UserUseCases } from 'src/use-cases/user';
 import { SignInRequestDto } from 'src/core';
-import { Public } from 'src/use-cases/authentication/auth.guard';
+import { Public } from 'src/core/auth.guard';
 
+@ApiBearerAuth('defaultBearerAuth')
 @ApiTags('Authentication')
 @Controller('api/auth')
 export class AuthController {
@@ -19,7 +20,7 @@ export class AuthController {
   }
 
   @Get('get-current-login')
-  async getCurrentLogin(@Request() req): Promise<any> {
+  async getCurrentLogin(@Request() req: any): Promise<any> {
     if (!req.user)
       return null;
     let id = req.user.sub;
