@@ -9,7 +9,7 @@ export class UserFactoryService {
     private readonly _passwordHelper: PasswordHelper
   ){
   }
-  
+
   getUserInformation(userData: User) {
     const userInformation = new UserDataResponseDto();
     userInformation.name = userData.firstName + userData.lastName;
@@ -38,9 +38,10 @@ export class UserFactoryService {
     return newUser;
   }
 
-  updateUser(updateUserDto: CreateUserRequestDto) {
-    const newUser = new UpdateUserDto;
-    newUser.name = updateUserDto.firstName + updateUserDto.lastName;
+  updateUser(updateUserDto: UpdateUserDto) {
+    const newUser = new User;
+    newUser.firstName = updateUserDto.firstName;
+    newUser.lastName = updateUserDto.lastName;
     newUser.email = updateUserDto.email;
 
     return newUser;

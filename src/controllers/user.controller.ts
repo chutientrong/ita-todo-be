@@ -1,13 +1,11 @@
 
 import { Controller, Get, Param, Post, Body, Put, Delete, UseGuards, Request } from '@nestjs/common';
 import { ApiTags, ApiResponse, ApiOkResponse, ApiBearerAuth } from '@nestjs/swagger';
-import { CreateUserRequestDto, UserDataResponseDto } from 'src/core';
+import { CreateUserRequestDto, UpdateUserDto, UserDataResponseDto } from 'src/core';
 import { UserUseCases } from 'src/use-cases/user';
 
-// @UseGuards(AuthGuard)
-
 @ApiBearerAuth('defaultBearerAuth')
-@ApiTags('user')
+@ApiTags('User')
 @Controller('api/user')
 export class UserController {
     constructor(
@@ -24,7 +22,7 @@ export class UserController {
     @ApiResponse({ status: 201, description: 'The record has been successfully created.', })
     @ApiResponse({ status: 403, description: 'Forbidden.' })
     async getAll(): Promise<UserDataResponseDto[]> {
-        return this.userService.getAllUsers();
+        return this.userService.getAllUsersAsync();
     }
 
     @Get('get-profile')
@@ -33,16 +31,26 @@ export class UserController {
     async getProfile(@Request() req: any): Promise<UserDataResponseDto> {
         if (!req.user)
             return null;
-        
+
         let id = req.user.sub;
-        return this.userService.getUserById(id);
+        return this.userService.getUserByIdAsync(id);
     }
 
-    @Post('create-user')
+    @Post('')
     @ApiResponse({ status: 201, description: 'The record has been successfully created.' })
     @ApiResponse({ status: 403, description: 'Forbidden.' })
-    async signupUser(@Body() userData: CreateUserRequestDto): Promise<UserDataResponseDto> {
-        return this.userService.createUser(userData);
+    async createUser(@Body() userData: CreateUserRequestDto): Promise<UserDataResponseDto> {
+        return this.userService.createUserAsync(userData);
+    }
+
+    @Put('/:id')
+    async updateUser(@Param('id') id: number, @Body() userData: UpdateUserDto) {
+         this.userService.updateUserAsync(id, userData);
+    }
+
+    @Delete('/:id')
+    async deleteUser(@Param('id') id: number) {
+         this.userService.deleteUserAsync(id);
     }
 
     // @Get('post/:id')

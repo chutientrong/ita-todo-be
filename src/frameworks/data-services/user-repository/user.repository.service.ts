@@ -18,4 +18,8 @@ export class UserRepository extends PGRepository<User> implements IUserRepositor
     });
     return await user;
   }
+  
+  async deleteUser(id: number) {
+    await this.usersRepository.delete(id);
+  }
 }

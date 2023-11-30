@@ -1,5 +1,6 @@
 import { Repository } from "typeorm";
 import { IBaseRepository } from "./base-repository.interface";
+import { BadRequestException } from "@nestjs/common";
 
 export class PGRepository<T> implements IBaseRepository<T> {
   private _repository: Repository<T>;
@@ -8,19 +9,23 @@ export class PGRepository<T> implements IBaseRepository<T> {
     this._repository = repository;
   }
 
-  getAll(): Promise<T[]> {
-    return this._repository.find();
+  async getAll(): Promise<T[]> {
+    return await this._repository.find();
   }
 
-  getById(id: any): Promise<T> {
-    return this._repository.findOneBy(id);
+  async getById(id: any): Promise<T> {
+    return await this._repository.findOneBy(id);
   }
 
-  create(item: T): Promise<T> {
-    return this._repository.save(item);
+  async create(item: T): Promise<T> {
+    return await this._repository.save(item);
   }
 
-  update(id: string, data: any) {
-    return this._repository.update(id, data);
+  async update(id: any, data: any) {
+    await this._repository.update(id, data);
+  }
+
+  async delete(id: number) {
+    await this._repository.delete(id);
   }
 }

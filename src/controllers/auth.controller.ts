@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Post, HttpCode, HttpStatus, Request, UseGuards } from '@nestjs/common';
-import { AuthUseCases } from 'src/use-cases/authentication/authenticate.use-case';
-import { ApiTags, ApiResponse, ApiOkResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { Body, Controller, Get, Post, HttpCode, HttpStatus, Request } from '@nestjs/common';
+import { AuthUseCases } from '../use-cases/authentication/index';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { UserUseCases } from 'src/use-cases/user';
 import { SignInRequestDto } from 'src/core';
 import { Public } from 'src/core/auth.guard';
@@ -25,6 +25,6 @@ export class AuthController {
       return null;
     let id = req.user.sub;
 
-    return this.userService.getUserLogger(id);
+    return this.userService.getUserLoggeAsync(id);
   }
 }
