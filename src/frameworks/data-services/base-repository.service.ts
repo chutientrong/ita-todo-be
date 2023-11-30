@@ -13,7 +13,7 @@ export class PGRepository<T> implements IBaseRepository<T> {
   }
 
   getById(id: any): Promise<T> {
-    return this._repository.findOne(id);
+    return this._repository.findOneBy(id);
   }
 
   create(item: T): Promise<T> {

@@ -4,6 +4,7 @@ import { AuthFactoryService } from './authenticate-factory.service';
 import { AuthUseCases } from './authenticate.use-case';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from 'src/core/common/constants';
+import { HelperModule } from 'src/core/helpers/helper.module';
 import { AuthGuard } from './auth.guard';
 
 @Module({
@@ -12,7 +13,7 @@ import { AuthGuard } from './auth.guard';
       global: true,
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '360s' },
-    }),],
+    }), HelperModule],
   providers: [AuthFactoryService, AuthUseCases, AuthGuard],
   exports: [AuthFactoryService, AuthUseCases, AuthGuard],
 })
