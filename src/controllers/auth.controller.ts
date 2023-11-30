@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Post, HttpCode, HttpStatus, Request, UseGuards } from '@nestjs/common';
 import { AuthUseCases } from 'src/use-cases/authentication/authenticate.use-case';
 import { ApiTags, ApiResponse, ApiOkResponse } from '@nestjs/swagger';
-import { AuthGuard, Public } from 'src/core/helpers/auth.guard';
 import { UserUseCases } from 'src/use-cases/user';
 import { SignInRequestDto } from 'src/core';
+import { Public } from 'src/use-cases/authentication/auth.guard';
 
 @ApiTags('Authentication')
 @Controller('api/auth')
