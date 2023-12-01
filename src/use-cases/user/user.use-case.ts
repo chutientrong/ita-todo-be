@@ -15,7 +15,7 @@ export class UserUseCases {
     return users.map((item) => this.userFactoryService.getUserInformation(item));
   }
 
-  async getUserLoggeAsync(id: any): Promise<UserLoggedResponseDto> {
+  async getUserLoggedAsync(id: any): Promise<UserLoggedResponseDto> {
     const curentUser = await this.userRepository.getById(id);
     return this.userFactoryService.getUserLoggedResponse(curentUser);
   }

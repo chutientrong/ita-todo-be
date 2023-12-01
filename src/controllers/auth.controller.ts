@@ -25,6 +25,6 @@ export class AuthController {
       return null;
     let id = req.user.sub;
 
-    return this.userService.getUserLoggeAsync(id);
+    return this.userService.getUserLoggedAsync(id);
   }
 }
