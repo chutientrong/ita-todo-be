@@ -1,8 +1,6 @@
 import { Injectable, UnauthorizedException, Inject } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from 'src/frameworks/data-services/user-repository/user.repository.service';
-import { PasswordHelper } from 'src/core';
-import { AuthGuard } from 'src/core/auth.guard';
+import { AuthGuard, PasswordHelper } from '@ita-company/ita-package';
 
 @Injectable()
 export class AuthUseCases {

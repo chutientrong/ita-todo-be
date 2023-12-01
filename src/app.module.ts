@@ -5,12 +5,11 @@ import { DataServicesModule } from './frameworks/data-services/data-services.mod
 import { AuthUseCasesModule } from './use-cases/authentication/authenticate-use-case.module';
 import { AuthController } from './controllers/auth.controller';
 import { APP_GUARD } from '@nestjs/core';
-import { HelperModule } from './core/helpers/helper.module';
-import { AuthGuard } from './core/auth.guard';
+import { AuthGuard, AuthenticationModule } from '@ita-company/ita-package';
 
 @Module({
   imports: [
-    HelperModule,
+    AuthenticationModule,
     DataServicesModule,
     AuthUseCasesModule,
     UserUseCasesModule
