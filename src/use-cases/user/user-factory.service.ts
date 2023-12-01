@@ -1,13 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { CreateUserRequestDto, UpdateUserDto, UserDataResponseDto, UserLoggedResponseDto } from '../../core/dtos';
 import { User } from 'src/frameworks/data-services/entities/user.entity';
-import { PasswordHelper } from 'src/core/helpers';
+import { PasswordHelper } from '@ita-company/ita-package';
 
 @Injectable()
 export class UserFactoryService {
   constructor(
     private readonly _passwordHelper: PasswordHelper
-  ){
+  ) {
   }
 
   getUserInformation(userData: User) {

@@ -3,7 +3,7 @@ import { AuthUseCases } from '../use-cases/authentication/index';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { UserUseCases } from 'src/use-cases/user';
 import { SignInRequestDto, SwaggerConstants } from 'src/core';
-import { Public } from 'src/core/auth.guard';
+import { Public } from '@ita-company/ita-package';
 
 @ApiBearerAuth(SwaggerConstants.defaultName)
 @ApiTags('Authentication')
