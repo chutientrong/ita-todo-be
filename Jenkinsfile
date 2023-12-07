@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        docker 'node:18-alpine'
-    }
+    agent any
     stages {
         stage('Build') { 
             steps {
