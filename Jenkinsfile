@@ -1,23 +1,39 @@
 pipeline {
-    agent any
-    tools {nodejs "node18"}
-    stages {
-        stage('Install dependencies') {
-            steps {
-                sh 'npm install'
-            }
+  agent any
+
+  options {
+    timeout(time: 10, unit: 'MINUTES')
+  }
+
+  environment {
+    ARTIFACT_ID = "chutientrong/ita-image:v1.0.0"
+  }
+
+  stages {
+    stage('Build') {
+      steps {
+        script {
+          dockerImage = docker.build "${env.ARTIFACT_ID}"
         }
-        stage('Build') {
-            steps {
-                sh 'npm run build'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh 'npm run test'
-            }
-        }
+      }
     }
+
+    stage('Login to Docker Hub') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'DockerHubTest', usernameVariable:  'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+          sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+        }
+      }
+    }
+
+    stage('Publish to Docker Hub') {
+      steps {
+        script {
+            dockerImage.push()
+        }
+      }
+    }
+  }
 }
 // pipeline {
 //     agent {
