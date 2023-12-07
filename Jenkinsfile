@@ -1,21 +1,23 @@
 pipeline {
-  agent any
+  agent {
+      docker {
+          image 'node:6-alpine'
+          args '-p 3000:3000'
+      }
+  }
+  environment {
+      CI = 'true' 
+  }
   stages {
-    stage("checkout") {
-      steps {
-        checkout scm
+      stage('Build') {
+          steps {
+              sh 'npm install'
+          }
       }
-    }
-    stage("Test") {
-      steps {
-        sh "npm install"
-        sh "npm run test"
+      stage('Test') { 
+          steps {
+              sh './jenkins/scripts/test.sh' 
+          }
       }
-    }
-    stage("Build") {
-      steps {
-        sh "npm run build"
-      }
-    }
   }
 }
