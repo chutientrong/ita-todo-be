@@ -13,7 +13,7 @@ pipeline {
     stage('Build') {
       steps {
         script {
-          dockerImage = docker.build "${env.ARTIFACT_ID}"
+          dockerImage = docker.build ("chutientrong/ita-image:v1.0.0")
         }
       }
     }
