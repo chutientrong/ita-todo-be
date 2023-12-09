@@ -1,40 +1,52 @@
 pipeline {
-  agent any
-
-  options {
-    timeout(time: 10, unit: 'MINUTES')
-  }
-
-  environment {
-    ARTIFACT_ID = "chutientrong/ita-image:v1.0.0"
-  }
-
-  stages {
-    stage('Build') {
-      steps {
-        script {
-          dockerImage = docker.build ("chutientrong/ita-image:v1.0.0")
+    agent { dockerfile true }
+    stages {
+        stage('Test') {
+            steps {
+                sh 'node --version'
+                sh 'svn --version'
+            }
         }
-      }
     }
-
-    stage('Login to Docker Hub') {
-      steps {
-        withCredentials([usernamePassword(credentialsId: 'DockerHubTest', usernameVariable:  'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-          sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
-        }
-      }
-    }
-
-    stage('Publish to Docker Hub') {
-      steps {
-        script {
-            dockerImage.push()
-        }
-      }
-    }
-  }
 }
+
+// pipeline {
+//   agent any
+
+//   options {
+//     timeout(time: 10, unit: 'MINUTES')
+//   }
+
+//   environment {
+//     ARTIFACT_ID = "chutientrong/ita-image:v1.0.0"
+//   }
+
+//   stages {
+//     stage('Build') {
+//       steps {
+//         script {
+//           dockerImage = docker.build ("chutientrong/ita-image:v1.0.0")
+//         }
+//       }
+//     }
+
+//     stage('Login to Docker Hub') {
+//       steps {
+//         withCredentials([usernamePassword(credentialsId: 'DockerHubTest', usernameVariable:  'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+//           sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+//         }
+//       }
+//     }
+
+//     stage('Publish to Docker Hub') {
+//       steps {
+//         script {
+//             dockerImage.push()
+//         }
+//       }
+//     }
+//   }
+// }
 // pipeline {
 //     agent {
 //         docker {
