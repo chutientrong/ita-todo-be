@@ -85,6 +85,7 @@ pipeline {
                 sh 'npm run build'
             }
         }
+        
         stage('Build Image') {
             steps {
                 sh 'docker build -t chutientrong/ita-image:v1.0.0 .'
