@@ -3,12 +3,12 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN yarn install
+RUN npm install
 
 COPY . .
 
-RUN yarn run build
+RUN npm run build
 
 EXPOSE 3000
 
-CMD ["yarn", "run", "start:prod"]
+CMD ["npm", "run", "start:prod"]
